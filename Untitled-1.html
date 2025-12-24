@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module de Recherche de Vols - Amadeus</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #007bff; }
+        form { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+        input, select, button { padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
+        button { background-color: #007bff; color: white; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        .results { margin-top: 20px; }
+        .flight { border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 4px; }
+        .flight h3 { margin: 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Recherche de Vols Simplifiée</h1>
+        <p>Amadeus</p>
+        
+        <form id="flightForm">
+            <input type="text" id="departure" placeholder="Ville de départ (ex: Paris)" required>
+            <input type="text" id="arrival" placeholder="Ville d'arrivée (ex: New York)" required>
+            <input type="date" id="departDate" required>
+            <input type="date" id="returnDate">
+            <select id="passengers">
+                <option value="1">1 passager</option>
+                <option value="2">2 passagers</option>
+                <option value="3">3 passagers</option>
+            </select>
+            <button type="submit">Rechercher des Vols</button>
+        </form>
+        
+        <div id="results" class="results" style="display: none;">
+            <h2>Résultats de Recherche</h2>
+            <div id="flightList"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('flightForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Récupérer les valeurs du formulaire
+            const departure = document.getElementById('departure').value;
+            const arrival = document.getElementById('arrival').value;
+            const departDate = document.getElementById('departDate').value;
+            const returnDate = document.getElementById('returnDate').value;
+            const passengers = document.getElementById('passengers').value;
+            
+            // Simulation de résultats (remplacez par un appel API réel à Amadeus ou Wajeez)
+            const flights = [
+                {
+                    airline: "Amadeus Airlines",
+                    from: departure,
+                    to: arrival,
+                    date: departDate,
+                    price: "€250",
+                    duration: "8h 30m"
+                },
+                {
+                    airline: "Wajeez Flights",
+                    from: departure,
+                    to: arrival,
+                    date: departDate,
+                    price: "€180",
+                    duration: "9h 15m"
+                },
+                {
+                    airline: "Amadeus Airlines",
+                    from: arrival,
+                    to: departure,
+                    date: returnDate || "N/A",
+                    price: returnDate ? "€270" : "Aller simple",
+                    duration: returnDate ? "8h 45m" : "N/A"
+                }
+            ];
+            
+            // Afficher les résultats
+            const resultsDiv = document.getElementById('results');
+            const flightList = document.getElementById('flightList');
+            flightList.innerHTML = '';
+            
+            flights.forEach(flight => {
+                const flightDiv = document.createElement('div');
+                flightDiv.className = 'flight';
+                flightDiv.innerHTML = `
+                    <h3>${flight.airline}</h3>
+                    <p><strong>De :</strong> ${flight.from} <strong>À :</strong> ${flight.to}</p>
+                    <p><strong>Date :</strong> ${flight.date}</p>
+                    <p><strong>Durée :</strong> ${flight.duration}</p>
+                    <p><strong>Prix :</strong> ${flight.price} pour ${passengers} passager(s)</p>
+                    <button>Réserver</button>
+                `;
+                flightList.appendChild(flightDiv);
+            });
+            
+            resultsDiv.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
